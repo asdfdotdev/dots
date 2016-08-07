@@ -1,8 +1,0 @@
-## Add to .bash_profile (Inspiration: https://spin.atomicobject.com/2016/05/28/log-bash-history/)
-export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)	$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Dropbox/bash/logs/bash-history-$(date "+%Y-%m-%d").log; fi'
-
-super_history_search() {
-  grep -C 0 "$1" ~/Dropbox/bash/logs/*.log
-}
-
-alias historyall=super_history_search

@@ -1,0 +1,19 @@
+############################################################################
+# Super Awesome History
+# (Copy to your .bash_profile and make some magic happen)
+#
+# Log all command line input separate from history and keep it accessible forever (You define lifespan of "forever")
+# - Save log file to dropbox (~/Dropbox/bash/logs/YYYY-MM-DD.log)
+# - Easily search all logs to find any command (See date and path where command was run)
+#############################################################################
+
+
+#  Log it
+export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Dropbox/bash/logs/$(date "+%Y-%m-%d").log; fi'
+
+
+# Search it
+super_history_search() {
+  grep -C 0 "$1" ~/Dropbox/bash/logs/*.log
+}
+alias historyall=super_history_search

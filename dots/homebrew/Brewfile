@@ -1,0 +1,78 @@
+##############################################
+# brew bundle --file=~/.dots/homebrew/Brewfile
+##############################################
+
+# Taps
+tap "caskroom/cask"
+tap "homebrew/apache"
+tap "homebrew/bundle"
+tap "homebrew/core"
+tap "homebrew/dupes"
+tap "homebrew/php"
+tap "homebrew/science"
+tap "homebrew/services"
+tap "homebrew/versions"
+tap "neovim/neovim"
+
+
+# Build tools
+brew "cmake"
+brew "gcc"
+
+
+# Git
+brew "hub"
+brew "hubflow"
+brew "git"
+brew "git-flow"
+
+
+# Libraries
+brew "msgpack"
+brew "libxml2"
+brew "libyaml"
+brew "openssl"
+
+
+# Languages
+brew "php56"
+brew "python"
+brew "node"
+
+
+# Tools
+brew "vim"
+brew "wget"
+brew "tidy-html5"
+brew "redis"
+
+
+# General Apps
+cask "slack"
+cask "google-chrome"
+cask "google-drive"
+cask "1password"
+cask "dropbox"
+cask "iterm2"
+cask "sketch"
+cask "github-desktop"
+cask "macdown"
+
+
+# Utilities
+brew "cmatrix"
+brew "coreutils"
+brew "p7zip"
+brew "ruby-build"
+brew "rbenv"
+
+
+brew "homebrew/dupes/zlib"
+brew "homebrew/apache/httpd24"
+brew "homebrew/php/brew-php-switcher"
+brew "homebrew/php/php56"
+brew "homebrew/php/composer"
+brew "homebrew/science/r"
+brew "homebrew/science/r-gui"
+brew "homebrew/versions/bison27"
+brew "neovim/neovim/neovim"

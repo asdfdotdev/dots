@@ -1,0 +1,90 @@
+
+# Because I'm Lazy
+alias .1='cd ../'
+alias .2='cd ../../'
+alias .3='cd ../../../'
+alias .4='cd ../../../../'
+alias look='less -FX'
+alias v='vim'
+alias vi='vim'
+alias nano='vim'
+alias math='expr'
+alias cc='clear'
+alias locip="ifconfig | grep inet"
+alias extip="curl ipecho.net/plain ; echo"
+
+
+# Because I'm Dumb (General)
+alias copy=$'printf "\nscp SOURCE TARGET (Remote: USER@HOST:FILEPATH) \n\n"'
+alias patch=$'printf "\nTEST: svn patch ~/upload/[PATCH].patch ./ --dry-run\nRUN:  svn patch ~/upload/[PATCH].patch ./\n\nDO A DRY RUN FIRST\n\n"'
+alias zip=$'printf "\nCOMPRESS: tar -zcvf ARCHIVE.tar.gz SOURCE\nEXTRACT: tar -zxvf ARCHIVE.tar.gz\n\n"'
+alias dump=$'printf "\nOUT: mysqldump -u USERNAME -p\'PASSWORD\' DB_NAME > FILE.sql\nIN:  mysql -u USERNAME -p\'PASSWORD\' DB_NAME < FILE.sql \n\n"'
+alias cmds=$'printf "\n// Slow Move\nh   move one character left\nj   move one row down\nk   move one row up\nl   move one character right\n\n// Fast Move\nH   move to top of screen\nM   move to middle of screen\nL   move to bottom of screen\n\n// Jumping\nw   move to beginning of next word\nW   move to beginning of next word after a whitespace\n\nb   move to previous beginning of word\nB   move to beginning of previous word before a whitespace\n\ne   move to end of word\nE   move to end of word before a whitespace\n\n"'
+alias search=$'printf "\nfind /PATH -name \"NAME\"\n\n"'
+
+# Because I'm Dumb (VCS)
+alias githelp=$'printf "\nCreate Patch\ngit format-patch BRANCH_NAME --stdout > FILE_NAME.patch\n\nUse It\ngit apply --stat PATCH_FILE.patch\t-- See Changes\ngit apply --check PATCH_FILE.patch\t-- Check for Error\ngit apply PATCH_FILE.patch\t\t-- Make it Real\n\n"'
+
+
+# Pretty Colors
+alias ll='gls --color=auto -la'
+alias ls='gls --color=auto'
+alias lsa='gls --color=auto -a'
+alias lsl='gls --color=auto -lht'
+alias lsd='gls --color=auto -d */'
+alias lsla='gls --color=auto -la'
+
+
+# Management
+alias rebash='source ~/.bash_profile'
+alias seebash='look $DBFILE'
+alias newbash='vim $DBFILE'
+alias localbash='vim ~/.bash_profile'
+
+
+# Sneek a Peek
+alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+
+# Tools
+alias cachelife='countdown.sh'
+
+
+# Git Branch Prompt
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+
+# Add brew autocomplete for git
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+. $(brew --prefix)/etc/bash_completion
+fi
+
+
+#  Super Awesome History
+export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Dropbox/bash/logs/$(date "+%Y-%m-%d").log; fi'
+
+super_history_search() {
+  grep -C 0 "$1" ~/Dropbox/bash/logs/*.log
+}
+
+alias historyall=super_history_search
+
+
+# Activate Colors
+if [ -f $DBCOLOR ]
+then
+  eval `gdircolors $DBCOLOR`
+fi
+
+
+#1, Make it So
+export PATH=$PATH:/usr/local/bin:/usr/local/Cellar:/usr/local/mysql/bin:~/Dropbox/bash/scripts:/usr/local/sbin
+
+
+# Confirm This Script Loaded
+alias spoon="echo 'Do not try and bend the spoon.'"
+alias nospoon="echo 'It is not the spoon that bends, it is only yourself.'"

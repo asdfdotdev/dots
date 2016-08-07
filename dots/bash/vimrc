@@ -1,0 +1,14 @@
+" Syntax Highlighting
+syntax on
+
+" Show Edit Mode on Last Line
+set showmode
+
+" Show Page Number
+set number
+
+" Hilight Search Strings
+set hlsearch
+
+" Make Search Case Insenstive
+set ignorecase
