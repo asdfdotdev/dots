@@ -37,9 +37,8 @@ alias lsla='gls --color=auto -la'
 
 # Management
 alias rebash='source ~/.bash_profile'
-alias seebash='look $DBFILE'
-alias newbash='vim $DBFILE'
-alias localbash='vim ~/.bash_profile'
+alias seebash='look ~/.bash_profile'
+alias newbash='vim ~/.bash_profile'
 
 
 # Sneek a Peek
@@ -75,9 +74,9 @@ alias historyall=super_history_search
 
 
 # Activate Colors
-if [ -f $DBCOLOR ]
+if [ -f ~/.dir_colors ]
 then
-  eval `gdircolors $DBCOLOR`
+  eval `gdircolors ~/.dir_colors`
 fi
 
 

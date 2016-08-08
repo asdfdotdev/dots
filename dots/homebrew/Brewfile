@@ -1,5 +1,5 @@
 ##############################################
-# brew bundle --file=~/.dots/homebrew/Brewfile
+# brew bundle --file=~/.dots/dots/homebrew/Brewfile
 ##############################################
 
 # Taps
@@ -12,20 +12,16 @@ tap "homebrew/php"
 tap "homebrew/science"
 tap "homebrew/services"
 tap "homebrew/versions"
-tap "neovim/neovim"
 
 
 # Build tools
 brew "cmake"
-brew "gcc"
-
 
 # Git
 brew "hub"
 brew "hubflow"
 brew "git"
 brew "git-flow"
-
 
 # Libraries
 brew "msgpack"
@@ -35,7 +31,8 @@ brew "openssl"
 
 
 # Languages
-brew "php56"
+# brew "php56"
+# brew "php70"
 brew "python"
 brew "node"
 
@@ -45,6 +42,7 @@ brew "vim"
 brew "wget"
 brew "tidy-html5"
 brew "redis"
+brew "homebrew/apache/httpd24"
 
 
 # General Apps
@@ -65,14 +63,3 @@ brew "coreutils"
 brew "p7zip"
 brew "ruby-build"
 brew "rbenv"
-
-
-brew "homebrew/dupes/zlib"
-brew "homebrew/apache/httpd24"
-brew "homebrew/php/brew-php-switcher"
-brew "homebrew/php/php56"
-brew "homebrew/php/composer"
-brew "homebrew/science/r"
-brew "homebrew/science/r-gui"
-brew "homebrew/versions/bison27"
-brew "neovim/neovim/neovim"
