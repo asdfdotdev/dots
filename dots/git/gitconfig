@@ -2,30 +2,32 @@
 	name = Chris Carlevato
 	email = chris@chris.com
 
-
 [push]
 	default = nothing
-
 
 [core]
     editor = vim
 	excludesfile = ~/.gitignore
 	autocrlf = input
 
-
 [diff]
 	tool = Kaleidoscope
+
 [merge]
 	tool = Kaleidoscope
+
 [difftool]
 	prompt = false
+
 [mergetool]
 	prompt = false
+
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
@@ -33,15 +35,16 @@
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 
-
 [filter "media"]
     required = true
     clean = git media clean %f
     smudge = git media smudge %f
+
 [filter "hawser"]
     clean = git hawser clean %f
     smudge = git hawser smudge %f
     required = true
+
 [filter "lfs"]
     clean = git lfs clean %f
     smudge = git lfs smudge %f
@@ -49,3 +52,11 @@
 
 [commit]
 	template = ~/.git_commit_template
+
+[alias]
+	co = checkout
+	cob = checkout -b
+    b = branch
+    s = status
+    r = remote -v
+    delb = branch -d
