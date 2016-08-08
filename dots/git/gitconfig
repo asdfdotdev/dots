@@ -1,6 +1,6 @@
-[user]
-	name = Chris Carlevato
-	email = chris@chris.com
+[include]
+    path = ~/.gituser
+
 
 [push]
 	default = nothing
@@ -60,3 +60,4 @@
     s = status
     r = remote -v
     delb = branch -d
+    m = merge
