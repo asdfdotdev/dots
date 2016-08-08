@@ -21,7 +21,7 @@ $ rebash
 ### Setup Vim config
 ```
 $ rm ~/.vimrc
-$ ln -s ~/.dots/dots/bash/vimrc ~/.vimrc
+$ ln -s ~/.dots/dots/vim/vimrc ~/.vimrc
 ```
 
 ### Setup Git config
