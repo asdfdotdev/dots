@@ -30,6 +30,3 @@ set confirm
 
 " Use visual bell instead of beeping when doing something wrong
 set visualbell
-
-" Enable use of the mouse for all modes
-set mouse=a
