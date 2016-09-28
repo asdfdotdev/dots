@@ -1,3 +1,12 @@
+PLATFORM=$(uname -a)
+
+if [[ $PLATFORM == *"Darwin"* ]]
+then
+    AUTOCOMPLETE=$(brew --prefix)/etc/bash_completion
+else
+    AUTOCOMPLETE='/etc/bash_completion'
+fi
+
 
 # Because I'm Lazy
 alias .1='cd ../'
@@ -27,13 +36,23 @@ alias githelp=$'printf "\nCreate Patch\ngit format-patch BRANCH_NAME --stdout > 
 
 
 # Pretty Colors
-alias ll='gls --color=auto -la'
-alias ls='gls --color=auto'
-alias lsa='gls --color=auto -a'
-alias lsl='gls --color=auto -lht'
-alias lsd='gls --color=auto -d */'
-alias lsla='gls --color=auto -la'
+if [[ $PLATFORM == *"Linux"* ]]
+then
+    alias ll='ls --color=auto -la'
+    alias ls='ls --color=auto'
+    alias lsa='ls --color=auto -a'
+    alias lsl='ls --color=auto -lht'
+    alias lsd='ls --color=auto -d */'
+    alias lsla='ls --color=auto -la'
 
+else
+    alias ll='gls --color=auto -la'
+    alias ls='gls --color=auto'
+    alias lsa='gls --color=auto -a'
+    alias lsl='gls --color=auto -lht'
+    alias lsd='gls --color=auto -d */'
+    alias lsla='gls --color=auto -la' 
+fi
 
 # Management
 alias rebash='source ~/.bash_profile'
@@ -58,33 +77,42 @@ export PS1="\u \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
 
 # Add brew autocomplete for git
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+if [ -f AUTOCOMPLETE ]
+then
+    . AUTOCOMPLETE
 fi
-
-#/etc/bash_completion.d/git-completion.bash
-
 
 
 #  Super Awesome History
-export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Dropbox/bash/logs/$(date "+%Y-%m-%d").log; fi'
+if [ -d ~/Dropbox/bash/logs/ ]
+then
+    export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Dropbox/bash/logs/$(date "+%Y-%m-%d").log; fi'
 
-super_history_search() {
-  grep -C 0 "$1" ~/Dropbox/bash/logs/*.log
-}
+    super_history_search() {
+      grep -C 0 "$1" ~/Dropbox/bash/logs/*.log
+    }
 
-alias historyall=super_history_search
+    alias historyall=super_history_search
+fi
 
 
 # Activate Colors
 if [ -f ~/.dir_colors ]
 then
-  eval `gdircolors ~/.dir_colors`
+    if [[ $PLATFORM == *"Linux"* ]]
+    then
+        eval `dircolors ~/.dir_colors`
+    else
+        eval `gdircolors ~/.dir_colors`
+    fi
 fi
 
 
 #1, Make it So
-export PATH=$PATH:/usr/local/bin:/usr/local/Cellar:/usr/local/mysql/bin:~/Dropbox/bash/scripts:/usr/local/sbin
+if [[ $PLATFORM == *'Linux'* ]]
+then
+    export PATH=$PATH:/usr/local/bin:/usr/local/Cellar:/usr/local/mysql/bin:~/Dropbox/bash/scripts:/usr/local/sbin
+fi
 
 
 # Confirm This Script Loaded
