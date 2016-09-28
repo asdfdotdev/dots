@@ -35,7 +35,7 @@ alias search=$'printf "\nfind /PATH -name \"NAME\"\n\n"'
 alias githelp=$'printf "\nCreate Patch\ngit format-patch BRANCH_NAME --stdout > FILE_NAME.patch\n\nUse It\ngit apply --stat PATCH_FILE.patch\t-- See Changes\ngit apply --check PATCH_FILE.patch\t-- Check for Error\ngit apply PATCH_FILE.patch\t\t-- Make it Real\n\n"'
 
 
-# Pretty Colors
+# Pretty Colors & Management
 if [[ $PLATFORM == *"Linux"* ]]
 then
     alias ll='ls --color=auto -la'
@@ -44,7 +44,9 @@ then
     alias lsl='ls --color=auto -lht'
     alias lsd='ls --color=auto -d */'
     alias lsla='ls --color=auto -la'
-
+    alias rebash='source ~/.bash_profile'
+    alias seebash='look ~/.bash_profile'
+    alias newbash='vim ~/.bash_profile'
 else
     alias ll='gls --color=auto -la'
     alias ls='gls --color=auto'
@@ -52,12 +54,10 @@ else
     alias lsl='gls --color=auto -lht'
     alias lsd='gls --color=auto -d */'
     alias lsla='gls --color=auto -la' 
+    alias rebash='source ~/.bash_profile'
+    alias seebash='look ~/.bash_profile'
+    alias newbash='vim ~/.bash_profile'
 fi
-
-# Management
-alias rebash='source ~/.bash_profile'
-alias seebash='look ~/.bash_profile'
-alias newbash='vim ~/.bash_profile'
 
 
 # Sneek a Peek
