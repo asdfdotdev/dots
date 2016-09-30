@@ -31,6 +31,7 @@ alias dump=$'printf "\nOUT: mysqldump -u USERNAME -p\'PASSWORD\' DB_NAME > FILE.
 alias cmds=$'printf "\n// Slow Move\nh   move one character left\nj   move one row down\nk   move one row up\nl   move one character right\n\n// Fast Move\nH   move to top of screen\nM   move to middle of screen\nL   move to bottom of screen\n\n// Jumping\nw   move to beginning of next word\nW   move to beginning of next word after a whitespace\n\nb   move to previous beginning of word\nB   move to beginning of previous word before a whitespace\n\ne   move to end of word\nE   move to end of word before a whitespace\n\n"'
 alias search=$'printf "\nfind /PATH -name \"NAME\"\n\n"'
 
+
 # Because I'm Dumb (VCS)
 alias githelp=$'printf "\nCreate Patch\ngit format-patch BRANCH_NAME --stdout > FILE_NAME.patch\n\nUse It\ngit apply --stat PATCH_FILE.patch\t-- See Changes\ngit apply --check PATCH_FILE.patch\t-- Check for Error\ngit apply PATCH_FILE.patch\t\t-- Make it Real\n\n"'
 
@@ -57,12 +58,9 @@ else
     alias rebash='source ~/.bash_profile'
     alias seebash='look ~/.bash_profile'
     alias newbash='vim ~/.bash_profile'
-fi
-
-
-# Sneek a Peek
-alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+    alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+fi
 
 
 # Tools
@@ -109,7 +107,7 @@ fi
 
 
 #1, Make it So
-if [[ $PLATFORM == *'Linux'* ]]
+if [[ $PLATFORM == *"Darwin"* ]]
 then
     export PATH=$PATH:/usr/local/bin:/usr/local/Cellar:/usr/local/mysql/bin:~/Dropbox/bash/scripts:/usr/local/sbin
 fi
