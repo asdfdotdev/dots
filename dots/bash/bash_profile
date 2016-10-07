@@ -112,6 +112,7 @@ then
     export PATH=$PATH:/usr/local/bin:/usr/local/Cellar:/usr/local/mysql/bin:~/Dropbox/bash/scripts:/usr/local/sbin
 fi
 
+export EDITOR=vim
 
 # Confirm This Script Loaded
 alias spoon="echo 'Do not try and bend the spoon.'"
