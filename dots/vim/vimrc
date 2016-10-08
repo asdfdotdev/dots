@@ -30,3 +30,5 @@ set confirm
 
 " Use visual bell instead of beeping when doing something wrong
 set visualbell
+
+set backspace=indent,eol,start

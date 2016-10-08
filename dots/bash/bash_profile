@@ -48,6 +48,7 @@ then
     alias rebash='source ~/.profile'
     alias seebash='look ~/.profile'
     alias newbash='vim ~/.profile'
+    alias shred='shred -zvu --iterations=5 --random-source=/dev/urandom'
 else
     alias ll='gls --color=auto -la'
     alias ls='gls --color=auto'
@@ -58,8 +59,9 @@ else
     alias rebash='source ~/.bash_profile'
     alias seebash='look ~/.bash_profile'
     alias newbash='vim ~/.bash_profile'
+    alias shred='gshred -zvu --iterations=5 --random-source=/dev/urandom'
     alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
-alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+    alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
 fi
 
 

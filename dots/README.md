@@ -11,6 +11,8 @@ Make backups of any local files you want to keep before removing & linking to do
 
 
 ### Setup bash profile
+> Note: you may want to use .profile
+
 ```
 $ rm ~/.bash_profile
 $ ln -s ~/.dots/dots/bash/bash_profile ~/.bash_profile
