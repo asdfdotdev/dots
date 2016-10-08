@@ -119,3 +119,5 @@ export EDITOR=vim
 # Confirm This Script Loaded
 alias spoon="echo 'Do not try and bend the spoon.'"
 alias nospoon="echo 'It is not the spoon that bends, it is only yourself.'"
+
+echo;fortune | cowsay;echo;

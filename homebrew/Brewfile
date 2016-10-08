@@ -1,6 +1,6 @@
-##############################################
+###################################################
 # brew bundle --file=~/.dots/dots/homebrew/Brewfile
-##############################################
+###################################################
 
 # Taps
 tap "caskroom/cask"
@@ -17,11 +17,11 @@ tap "homebrew/versions"
 # Build tools
 brew "cmake"
 
-# Git
-brew "hub"
-brew "hubflow"
+
+# Version Control
 brew "git"
-brew "git-flow"
+brew "subversion"
+
 
 # Libraries
 brew "msgpack"
@@ -43,6 +43,8 @@ brew "wget"
 brew "tidy-html5"
 brew "redis"
 brew "homebrew/apache/httpd24"
+brew "mysql"
+brew "wp-cli"
 
 
 # General Apps
@@ -53,12 +55,13 @@ cask "1password"
 cask "dropbox"
 cask "iterm2"
 cask "sketch"
-cask "github-desktop"
 cask "macdown"
 
 
 # Utilities
 brew "cmatrix"
+brew "cowsay"
+brew "fortune"
 brew "coreutils"
 brew "p7zip"
 brew "ruby-build"
