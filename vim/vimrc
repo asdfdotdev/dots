@@ -32,4 +32,8 @@ set confirm
 " Use visual bell instead of beeping when doing something wrong
 set visualbell
 
+" A more forgiving delete
 set backspace=indent,eol,start
+
+" Heresy, because I'm 1/2 the programmer you are
+set softtabstop=4 shiftwidth=4 expandtab
