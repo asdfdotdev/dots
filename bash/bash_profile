@@ -23,9 +23,12 @@ alias vi='vim'
 alias nano='vim'
 alias math='expr'
 alias cc='clear'
-alias locip="ifconfig | grep inet"
-alias extip="curl ipecho.net/plain ; echo"
-alias emptytrash="shred $TRASH/* || true  && shred $TRASH/*/* || true && rm -rf $TRASH/* || true && ll $TRASH"
+alias locip='ifconfig | grep inet'
+alias extip='curl ipecho.net/plain ; echo'
+alias emptytrash='shred $TRASH/* || true  && shred $TRASH/*/* || true && rm -rf $TRASH/* || true && ll $TRASH'
+alias githome='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_home ~/.gituser'
+alias gitwork='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_work ~/.gituser'
+alias gitcheck='git config -l | grep user'
 
 
 # Because I'm Dumb (General)

@@ -39,6 +39,8 @@ $ ln -s ~/.dots/git/commit_template ~/.git_commit_template
 > Note: If git autocomplete isn't working check for `/usr/local/etc/bash_completion`, if it's missing: run ```$ ln -s /usr/local/etc/bash_completion.d/git-completion.bash /usr/local/etc/bash_completion```
 
 #### Setup Git User
+Use githome/gitwork alias, or:
+
 ```
 $ ln -s ~/.dots/git/gituser_WHICH ~/.gituser
 ```
