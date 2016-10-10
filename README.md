@@ -11,8 +11,6 @@ Make backups of any local files you want to keep before removing & linking to do
 
 
 ### Setup bash profile
-> Note: You may want to use .profile in place of .bash_profile
-
 ```
 $ rm ~/.bash_profile
 $ ln -s ~/.dots/bash/bash_profile ~/.bash_profile
@@ -20,13 +18,16 @@ $ ln -s ~/.dots/bash/dir_colors ~/.dir_colors
 $ source ~/.bash_profile
 ```
 
-### Setup Vim config
+> Note: You may want to use .profile in place of .bash_profile
+
+### Setup Vim
 ```
 $ rm ~/.vimrc
 $ ln -s ~/.dots/vim/vimrc ~/.vimrc
+$ ln -s ~/.dots/vim/colors/ ~/.vim/colors
 ```
 
-### Setup Git config
+### Setup Git
 ```
 $ rm ~/.gitconfig
 $ rm ~/.gitignore_global
@@ -41,6 +42,7 @@ $ ln -s ~/.dots/git/commit_template ~/.git_commit_template
 ```
 $ ln -s ~/.dots/git/gituser_WHICH ~/.gituser
 ```
+
 > Note: WHICH = work|home. This allows distinct identities when needed (update these profiles as needed or I'll get credit for your commits :)).
 
 ### Setup Homebrew (macOS)

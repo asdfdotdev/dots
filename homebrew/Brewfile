@@ -12,6 +12,7 @@ tap "homebrew/php"
 tap "homebrew/science"
 tap "homebrew/services"
 tap "homebrew/versions"
+tap "macvim-dev/macvim"
 
 
 # Build tools
@@ -39,6 +40,7 @@ brew "node"
 
 # Tools
 brew "vim"
+brew "macvim"
 brew "wget"
 brew "tidy-html5"
 brew "redis"

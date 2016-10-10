@@ -1,4 +1,5 @@
 set nocompatible
+colorscheme molokai
 
 " Syntax Highlighting
 syntax on
