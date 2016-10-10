@@ -3,8 +3,10 @@ PLATFORM=$(uname -a)
 if [[ $PLATFORM == *"Darwin"* ]]
 then
     AUTOCOMPLETE=$(brew --prefix)/etc/bash_completion
+    TRASH='~/.Trash'
 else
     AUTOCOMPLETE='/etc/bash_completion'
+    TRASH='~/.local/share/Trash'
 fi
 
 
@@ -21,6 +23,7 @@ alias math='expr'
 alias cc='clear'
 alias locip="ifconfig | grep inet"
 alias extip="curl ipecho.net/plain ; echo"
+alias emptytrash="shred $TRASH/* || true  && shred $TRASH/*/* || true && rm -rf $TRASH/* || true && ll $TRASH"
 
 
 # Because I'm Dumb (General)
