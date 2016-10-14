@@ -53,5 +53,11 @@ $ brew tap homebrew/bundle
 $ brew bundle --file=~/.dots/homebrew/Brewfile
 ```
 
+### Alfred Workflows
+
+* **Lorem Generator** - Generates lorem ipsum string of specified character length.
+
+> Note: Lorem Generator requires brew package lorem. `$ brew install lorem`
+
 ## License
 Everything in this repo is licensed under the [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
