@@ -47,7 +47,7 @@ brew "redis"
 brew "homebrew/apache/httpd24"
 brew "mysql"
 brew "wp-cli"
-
+brew "lorem"
 
 # General Apps
 cask "slack"
