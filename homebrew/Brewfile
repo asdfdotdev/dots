@@ -45,7 +45,7 @@ brew "wget"
 brew "tidy-html5"
 brew "redis"
 brew "homebrew/apache/httpd24"
-brew "mysql"
+brew "mariadb"
 brew "wp-cli"
 brew "lorem"
 
