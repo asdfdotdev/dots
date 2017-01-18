@@ -142,6 +142,8 @@ export EDITOR=vim
 alias spoon="echo 'Do not try and bend the spoon.'"
 alias nospoon="echo 'It is not the spoon that bends, it is only yourself.'"
 
+# Ruby Shim
+eval "$(rbenv init -)"
 
 # A Fun Greeting
 echo;fortune | cowsay;echo;
