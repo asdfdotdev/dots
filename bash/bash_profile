@@ -49,7 +49,7 @@ if [[ $PLATFORM == *"Linux"* ]]
 then
     alias ll='ls --color=auto -la'
     alias ls='ls --color=auto'
-    alias lsa='ls --color=auto -a'
+    alias la='ls --color=auto -a'
     alias lsl='ls --color=auto -lht'
     alias lsd='ls --color=auto -d */'
     alias lsla='ls --color=auto -la'
@@ -60,7 +60,7 @@ then
 else
     alias ll='gls --color=auto -la'
     alias ls='gls --color=auto'
-    alias lsa='gls --color=auto -a'
+    alias la='gls --color=auto -a'
     alias lsl='gls --color=auto -lht'
     alias lsd='gls --color=auto -d */'
     alias lsla='gls --color=auto -la' 
@@ -130,7 +130,7 @@ fi
 #1, Make it So
 if [[ $PLATFORM == *"Darwin"* ]]
 then
-    export PATH=$PATH:/usr/local/bin:/usr/local/Cellar:/usr/local/mysql/bin:~/Dropbox/bash/scripts:/usr/local/sbin
+    export PATH=/usr/local/bin:/usr/local/Cellar:/usr/local/bin/mysql:~/Dropbox/bash/scripts:/usr/local/sbin:$PATH
 fi
 
 
@@ -143,7 +143,10 @@ alias spoon="echo 'Do not try and bend the spoon.'"
 alias nospoon="echo 'It is not the spoon that bends, it is only yourself.'"
 
 # Ruby Shim
-eval "$(rbenv init -)"
+if [[ $PLATFORM == *"Darwin"* ]]
+then
+    eval "$(rbenv init -)"
+fi
 
 # A Fun Greeting
 echo;fortune | cowsay;echo;
