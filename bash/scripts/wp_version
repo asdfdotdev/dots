@@ -1,0 +1,64 @@
+#!/usr/bin/php
+
+<?php
+
+// get URL parameter from command
+$site_to_check = $argv[1];
+
+// if URL is invalid stop
+if (!filter_var($site_to_check, FILTER_VALIDATE_URL)) {
+    echo "Invalid URL";
+}
+// otherwise try to get version number
+else {
+    preg_match('/<.*content="WordPress (.*)".*>/i', fetch_output($site_to_check), $version);
+
+    // version number found, check it
+    if (isset($version[1])) {
+        echo "Site:\t\t$site_to_check\nVersion:\t$version[1]\nStatus:\t\t";
+        echo check_version_number($version[1]);
+    }
+    // generator meta tag with version number not found
+    else {
+        echo "No WordPress version meta found.";
+    }
+}
+
+// move their prompt to a new line
+echo "\n";
+
+
+/**
+ * Retrive upgrade status for passed version number from WordPress API
+ *
+ * @param string    $version
+ * @return string   version status (Latest Relase | Upgrade Needed)
+ */
+function check_version_number($version='4.5') {
+    $result = 'Latest Release';
+    $response = fetch_output('http://api.wordpress.org/core/version-check/1.0/?version=' . $version);
+
+    if (stripos($response, 'latest') === false) {
+        $result = 'Upgrade Needed';
+    }
+
+    return $result;
+}
+
+/**
+ * curl wrapper, fetches page output for a passed url
+ *
+ * @param string    $url URL of site to fetch
+ * @return mixed    page output
+ */
+function fetch_output($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($ch);
+    curl_close($ch);
+
+    return $output;
+}
+?>
+
