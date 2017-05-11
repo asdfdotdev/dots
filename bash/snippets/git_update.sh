@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LOG_DIR="${HOME}/logs"
-LOG_FILE="my_awesome.log"
+LOG_FILE="git_updates.log"
 GIT_DIRS="${HOME}/Sites/*/"
 
 DATE=`date +%Y-%m-%d:%H:%M:%S`
