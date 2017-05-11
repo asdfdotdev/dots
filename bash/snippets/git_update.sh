@@ -34,12 +34,12 @@ for DIR in ${HOME}/Sites/*/ ; do
 
     # Let them know stuff is happening, then log results
     echo -n "."
-    echo "Updated: ${DIR}
--- master: ${CHECKOUT_MASTER}
--- staging: ${CHECKOUT_STAGING}" >> ${LOG_DIR}/${LOG_FILE}
+    echo "Updated: ${DIR}" >> ${LOG_DIR}/${LOG_FILE}
 done
 
 END_DATE=`date +%Y-%m-%d:%H:%M:%S`
+
 echo ""
-echo "Completed at: ${END_DATE}, results logged to ${LOG_DIR}/${LOG_FILE}"
+echo "Update complete, results logged to ${LOG_DIR}/${LOG_FILE}"
+echo "Completed at: ${END_DATE}" >> ${LOG_DIR}/${LOG_FILE}
 
