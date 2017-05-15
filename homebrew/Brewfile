@@ -21,6 +21,7 @@ brew "cmake"
 
 # Version Control
 brew "git"
+brew "git-extras"
 brew "subversion"
 
 
@@ -45,18 +46,15 @@ brew "wget"
 brew "tidy-html5"
 brew "redis"
 brew "homebrew/apache/httpd24"
-brew "mariadb"
+#brew "mariadb"
 brew "wp-cli"
 brew "lorem"
 
+
 # General Apps
 cask "slack"
-cask "google-chrome"
-cask "google-drive"
-cask "1password"
 cask "dropbox"
 cask "iterm2"
-cask "sketch"
 cask "macdown"
 
 
