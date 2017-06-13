@@ -11,13 +11,14 @@ DATE=`date +%Y-%m-%d:%H:%M:%S`
 touch ${LOG_DIR}/${LOG_FILE} || exit
 
 # Start new log entry
-echo "------------------------
-Starting Update at: ${DATE}" >> ${LOG_DIR}/${LOG_FILE}
+printf "|||||||||||||||||||||||||||||||||||||||||||||\n\nStarting Update at: ${DATE}\n" >> ${LOG_DIR}/${LOG_FILE}
 
-for DIR in ${HOME}/Sites/*/ ; do
+for DIR in ${GIT_DIRS} ; do
    {
-        cd DIR
-        
+        cd ${DIR}
+        printf "\n---------------------------------------------"
+        printf "\nUpdating: ${DIR}\n" >> ${LOG_DIR}/${LOG_FILE} 
+ 
         # Checkout & Pull Staging
         CHECKOUT_STAGING=$(git checkout staging)
         if [[ $CHECKOUT_STAGING == *"Your branch is up-to-date"* ]]; then
@@ -30,11 +31,10 @@ for DIR in ${HOME}/Sites/*/ ; do
             PULL_MASTER=$(git pull)
         fi
     
-    } &> /dev/null
+    } >> ${LOG_DIR}/${LOG_FILE} 2>&1
 
-    # Let them know stuff is happening, then log results
+    # Let them know stuff is happening
     echo -n "."
-    echo "Updated: ${DIR}" >> ${LOG_DIR}/${LOG_FILE}
 done
 
 END_DATE=`date +%Y-%m-%d:%H:%M:%S`
