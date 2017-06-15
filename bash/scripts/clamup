@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Viruses will be moved here when found
+DUMP_DIR="${HOME}/VIRUS"
+
+# Confirm we have something to scan
+if [[ -z "$1" ]]; then
+    printf "Please provide a path to scan.\n"
+    exit 1
+fi
+
+# Check for dump directory, create if missing
+[ -d $DUMP_DIR ] || mkdir $DUMP_DIR
+
+# Update definitions
+freshclam
+
+# Run Scan on selected path
+clamscan -r --move=${DUMP_DIR} $1
+
