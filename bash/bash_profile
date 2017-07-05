@@ -131,6 +131,8 @@ fi
 if [[ $PLATFORM == *"Darwin"* ]]
 then
     export PATH=/usr/local/bin:/usr/local/Cellar:/usr/local/bin/mysql:~/.dots/bash/scripts:/usr/local/sbin:$PATH
+else
+    export PATH=~/.dots/bash/scripts:$PATH
 fi
 
 
