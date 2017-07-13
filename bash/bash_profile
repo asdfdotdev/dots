@@ -1,6 +1,7 @@
 # Variables
 
 PLATFORM=$(uname -a)
+ERROR_LOG_FILE="${HOME}/logs/php_error.log"
 
 if [[ $PLATFORM == *"Darwin"* ]]
 then
@@ -73,6 +74,12 @@ else
     alias sed='gsed'
 fi
 
+# Debugging
+function newlog { rm $ERROR_LOG_FILE;touch $ERROR_LOG_FILE; }
+export -f newlog
+
+function watchlog { tail -f $ERROR_LOG_FILE; }
+export -f watchlog
 
 # Tools
 alias cachelife='countdown.sh'
