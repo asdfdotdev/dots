@@ -14,7 +14,11 @@ touch ${LOG_DIR}/${LOG_FILE} || exit
 printf "|||||||||||||||||||||||||||||||||||||||||||||\n\nStarting Update at: ${DATE}\n" >> ${LOG_DIR}/${LOG_FILE}
 
 for DIR in ${GIT_DIRS} ; do
-   {
+    if [[ -f "${DIR}.skipup" ]]; then
+        continue
+    fi
+
+    {
         cd ${DIR}
         printf "\n---------------------------------------------"
         printf "\nUpdating: ${DIR}\n" >> ${LOG_DIR}/${LOG_FILE} 
