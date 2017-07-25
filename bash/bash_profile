@@ -31,6 +31,7 @@ alias githome='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_home ~/.gituse
 alias gitwork='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_work ~/.gituser'
 alias gitcheck='git config -l | grep user'
 alias unixtime='date +%s'
+alias vic="vim -c 'execute \"silent !echo \" . &fileencoding | q'"
 
 # Because I'm Dumb (General)
 alias copy=$'printf "\nscp SOURCE TARGET (Remote: USER@HOST:FILEPATH) \n\n"'
