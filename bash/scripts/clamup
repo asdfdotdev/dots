@@ -24,4 +24,8 @@ freshclam
 # Run Scan on selected path
 clamscan -r --move=${DUMP_DIR} -l ${LOG_DIR}/${LOG_FILE} $1
 
+END_DATE=`date +%Y-%m-%d:%H:%M:%S`
 
+echo ""
+echo "Scan complete, results logged to ${LOG_DIR}/${LOG_FILE}"
+echo "Completed at: ${END_DATE}" >> ${LOG_DIR}/${LOG_FILE}
