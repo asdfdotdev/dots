@@ -4,6 +4,7 @@
 DUMP_DIR="${HOME}/VIRUS"
 LOG_DIR="${HOME}/logs"
 LOG_FILE="clamav_scan.log"
+CURRENT_LOCATION=$(pwd)
 
 # Check for log directory & file
 [ -d $LOG_DIR ] || mkdir $LOG_DIR
@@ -28,4 +29,9 @@ END_DATE=`date +%Y-%m-%d:%H:%M:%S`
 
 echo ""
 echo "Scan complete, results logged to ${LOG_DIR}/${LOG_FILE}"
-echo "Completed at: ${END_DATE}" >> ${LOG_DIR}/${LOG_FILE}
+
+# Add a bit to the log for context
+echo "" >> ${LOG_DIR}/${LOG_FILE}
+echo "Scan initated from: ${CURRENT_LOCATION}" >> ${LOG_DIR}/${LOG_FILE}
+echo "Scan path: $1" >> ${LOG_DIR}/${LOG_FILE}
+echo "Scan completed at: ${END_DATE}" >> ${LOG_DIR}/${LOG_FILE}
