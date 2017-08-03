@@ -2,6 +2,12 @@
 
 # Viruses will be moved here when found
 DUMP_DIR="${HOME}/VIRUS"
+LOG_DIR="${HOME}/logs"
+LOG_FILE="clamav_scan.log"
+
+# Check for log directory & file
+[ -d $LOG_DIR ] || mkdir $LOG_DIR
+touch ${LOG_DIR}/${LOG_FILE} || exit
 
 # Confirm we have something to scan
 if [[ -z "$1" ]]; then
@@ -16,5 +22,6 @@ fi
 freshclam
 
 # Run Scan on selected path
-clamscan -r --move=${DUMP_DIR} $1
+clamscan -r --move=${DUMP_DIR} -l ${LOG_DIR}/${LOG_FILE} $1
+
 
