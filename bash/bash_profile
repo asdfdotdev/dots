@@ -76,7 +76,7 @@ else
 fi
 
 # Debugging
-function newlog { rm $ERROR_LOG_FILE;touch $ERROR_LOG_FILE; }
+function newlog { rm $ERROR_LOG_FILE; touch $ERROR_LOG_FILE; printf "Log Cleared\n"; }
 export -f newlog
 
 function watchlog { tail -f $ERROR_LOG_FILE; }
