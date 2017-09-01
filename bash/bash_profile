@@ -85,6 +85,10 @@ export -f watchlog
 # Tools
 alias cachelife='countdown.sh'
 
+# Misc
+
+function bak { cp $1{,.bak};  }
+export -f bak
 
 # Git & SVN Branch Prompt
 parse_git_branch() {
