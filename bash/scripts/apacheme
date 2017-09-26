@@ -1,0 +1,184 @@
+#!/bin/bash
+
+# Must be root
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root. But only if you know what you're doing." 
+   exit
+fi
+
+# Caveat Emptor
+
+echo -e "Don't tl;dr this part, it's important.\n\nThis script will make changes to your system in locations you tell it to.\nSpecifically it will:\n\t1) create an apache config file\n\t2) create a symlink to that file (optional)\n\t3) append an entry to your hosts file\nIf you don't understand what any of that means, stop now.\nIf you're sure you want to proceed answer YES.\n"
+read -p $'Do you assume complete reponsibility for your actions and wish to proceed? \e[2m(yes/NO)\e[0m: ' ACCEPTED_RESPONSIBILITY
+
+if [[ "$ACCEPTED_RESPONSIBILITY" != "yes" ]]; then
+    echo "That's probably safest..."
+    exit
+fi
+
+# Set defaults based on environment
+PLATFORM=$(uname -a)
+RUNNING_USER=$(logname)
+if [[ $PLATFORM == *"Darwin"* ]]
+then
+    DEFAULT_DIR_AVAILABLE="/usr/local/etc/apache2/2.4/sites-available"
+    DEFAULT_DIR_ENABLED="/usr/local/etc/apache2/2.4/sites-enabled"
+    DEFAULT_SOURCE_PATH="/Users/${RUNNING_USER}/Sites/com.site"
+else
+    DEFAULT_DIR_AVAILABLE=""
+    DEFAULT_DIR_ENABLED=""
+    DEFAULT_SOURCE_PATH=""
+fi
+
+DEFAULT_DEV_URL="site.com.test"
+DEFAULT_SSL_ON="no"
+
+
+# Get sites available path, or use default
+read -p $'Sites Available \033[2m('$DEFAULT_DIR_AVAILABLE$')\033[0m: ' DIR_AVAILABLE
+
+if [[ -z "$DIR_AVAILABLE" ]]; then
+    DIR_AVAILABLE=${DEFAULT_DIR_AVAILABLE}
+fi
+
+echo -e "\033[0;32m$DIR_AVAILABLE\033[0m"
+
+
+# Should we enable the site now?
+read -p $'Create symlink to enable site? \e[2m(yes/NO)\e[0m: ' ENABLE_SITE
+
+shopt -s nocasematch
+if [[ "$ENABLE_SITE" == "yes" ]]; then
+    # Get Sites enabled path, or use default
+    read -p $'Sites Enabled \033[2m('$DEFAULT_DIR_ENABLED$')\033[0m: ' DIR_ENABLED
+
+    if [[ -z "$DIR_ENABLED" ]]; then
+        DIR_ENABLED=${DEFAULT_DIR_ENABLED}
+    fi
+
+    echo -e "\033[0;32m$DIR_ENABLED\033[0m"
+else
+    echo -e "\033[1;33mPlease create symlink to enable site manually when ready.\033[0m"
+fi
+
+
+# Get local dev url, or use default
+read -p $'Local Dev URL WITHOUT Protocol \033[2m('$DEFAULT_DEV_URL$')\033[0m: ' DEV_URL
+
+if [[ -z "$DEV_URL" ]]; then
+    DEV_URL=${DEFAULT_DEV_URL}
+fi
+
+echo -e "\033[0;32m$DEV_URL\033[0m"
+
+
+# Get local source path, or use default
+read -p $'Local Source Path \e[02m('$DEFAULT_SOURCE_PATH$')\e[0m: ' SOURCE_PATH
+
+if [[ -z "$SOURCE_PATH" ]]; then
+    SOURCE_PATH=${DEFAULT_SOURCE_PATH}
+fi
+
+echo -e "\033[0;32m$SOURCE_PATH\033[0m"
+
+
+# Add optional SSL config
+read -p $'SSL Listener \e[2m(ON/off)\e[0m: ' SSL_ON
+
+
+if [[ "$SSL_ON" != "on" ]]; then
+    SSL_ON=${DEFAULT_SSL_ON}
+fi
+
+echo -e "\033[0;32mSSL Listener: $SSL_ON\033[0m"
+
+
+# Validate
+
+printf "\e[2mConfirming provided directory paths exist...\e[0m\n"
+
+if [ ! -d "$DIR_AVAILABLE" ]; then
+    echo -e "\033[0;31mFattal Error: Sites Available directory does not exist.\033[0m"
+    exit
+fi
+
+if [[ "$ENABLE_SITE" == "yes" ]]; then
+    if [ ! -d "$DIR_ENABLED" ]; then
+        echo -e "\033[0;31mFattal Error: Sites Enabled directory does not exist.\033[0m"
+        exit
+    fi
+fi
+
+if [ ! -d "$SOURCE_PATH" ]; then
+    echo -e "\033[0;31mFattal Error: Source Path directory does not exist.\033[0m"
+    exit
+fi
+
+
+## Give them one last chance
+
+read -p $'Ok, looks good so far. Are you sure you want to do this? \e[2m(yes/NO)\e[0m: ' ACCEPTED_RESPONSIBILITY
+
+if [[ "$ACCEPTED_RESPONSIBILITY" != "yes" ]]; then
+    echo "That's probably safest..."
+    exit
+fi
+
+
+## Create apache config file
+
+printf "\e[2mCreating apache config file...\e[0m\n"
+
+$(rm ${DIR_AVAILABLE}/${DEV_URL}.conf &> /dev/null)
+
+echo "# Local dev apache config file, automagically created by apacheme
+
+<VirtualHost *:80>
+    ServerName ${DEV_URL}
+    DocumentRoot "${SOURCE_PATH}"
+</VirtualHost>
+" >> ${DIR_AVAILABLE}/${DEV_URL}.conf
+
+
+if [[ "$SSL_ON" == "on" ]]; then
+    echo "<VirtualHost *:443>
+    SSLEngine On
+    ServerName ${DEV_URL}
+    DocumentRoot "${SOURCE_PATH}"
+</VirtualHost>
+    " >> ${DIR_AVAILABLE}/${DEV_URL}.conf
+fi
+
+
+## Create symlink to enable the site
+
+if [[ "$ENABLE_SITE" == "yes" ]]; then
+    printf "\e[2mCreating symlink to enable site...\e[0m\n"
+
+    $(rm ${DIR_ENABLED}/${DEV_URL}.conf &> /dev/null)
+    $(ln -s ${DIR_AVAILABLE}/${DEV_URL}.conf ${DIR_ENABLED}/${DEV_URL}.conf)
+fi
+
+
+
+## Update hosts file
+
+HOSTS_FILE_ENTRY=$(grep "127.0.0.1 ${DEV_URL}" /etc/hosts)
+
+if [[ -z "$HOSTS_FILE_ENTRY" ]]; then
+    printf "\e[2mUpdating hosts file...\e[0m\n"    
+    echo "127.0.0.1 ${DEV_URL}     # added automagically by apacheme" >> /etc/hosts
+else
+    printf "\e[2mHosts entry found, file unchanged...\e[0m\n"    
+fi
+
+## All done, let them know what happened
+
+echo -e "Congratulations you've completed the setup of your new dev site."
+echo -e "Apache Config: ${DIR_AVAILABLE}/${DEV_URL}.conf"
+
+if [[ "$ENABLE_SITE" == "yes" ]]; then
+    echo -e "...please restart Apache now to activate the new site."
+else
+    echo -e "...please restart Apache after creating site enabled symlink to activate the new site."
+fi
