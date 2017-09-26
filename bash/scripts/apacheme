@@ -9,7 +9,6 @@ fi
 
 
 # Caveat Emptor
-
 echo -e "Don't tl;dr this part, it's important.\n\nThis script will make changes to your system in locations you tell it to.\nSpecifically it will:\n\t1) create an apache config file\n\t2) create a symlink to that file (optional)\n\t3) append an entry to your hosts file\nIf you don't understand what any of that means, stop now.\nIf you're sure you want to proceed answer YES.\n"
 read -p $'Do you assume complete reponsibility for your actions and wish to proceed? \e[2m(yes/NO)\e[0m: ' ACCEPTED_RESPONSIBILITY
 
@@ -96,7 +95,6 @@ echo -e "\033[0;32mSSL Listener: $SSL_ON\033[0m"
 
 
 # Validate
-
 printf "\e[2mConfirming provided directory paths exist...\e[0m\n"
 
 if [ ! -d "$DIR_AVAILABLE" ]; then
@@ -118,7 +116,6 @@ fi
 
 
 ## Give them one last chance
-
 read -p $'Ok, looks good so far. Are you sure you want to do this? \e[2m(yes/NO)\e[0m: ' ACCEPTED_RESPONSIBILITY
 
 if [[ "$ACCEPTED_RESPONSIBILITY" != "yes" ]]; then
@@ -128,7 +125,6 @@ fi
 
 
 ## Create apache config file
-
 printf "\e[2mCreating apache config file...\e[0m\n"
 
 $(rm ${DIR_AVAILABLE}/${DEV_URL}.conf &> /dev/null)
@@ -152,7 +148,6 @@ fi
 
 
 ## Create symlink to enable the site
-
 if [[ "$ENABLE_SITE" == "yes" ]]; then
     printf "\e[2mCreating symlink to enable site...\e[0m\n"
 
@@ -162,7 +157,6 @@ fi
 
 
 ## Update hosts file
-
 HOSTS_FILE_ENTRY=$(grep "127.0.0.1 ${DEV_URL}" /etc/hosts)
 
 if [[ -z "$HOSTS_FILE_ENTRY" ]]; then
@@ -174,7 +168,6 @@ fi
 
 
 ## All done, let them know what happened
-
 echo -e "Congratulations you've completed the setup of your new dev site."
 echo -e "Apache Config: ${DIR_AVAILABLE}/${DEV_URL}.conf"
 
