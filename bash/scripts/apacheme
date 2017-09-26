@@ -1,10 +1,12 @@
 #!/bin/bash
 
+
 # Must be root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root. But only if you know what you're doing." 
    exit
 fi
+
 
 # Caveat Emptor
 
@@ -15,6 +17,7 @@ if [[ "$ACCEPTED_RESPONSIBILITY" != "yes" ]]; then
     echo "That's probably safest..."
     exit
 fi
+
 
 # Set defaults based on environment
 PLATFORM=$(uname -a)
@@ -85,7 +88,6 @@ echo -e "\033[0;32m$SOURCE_PATH\033[0m"
 # Add optional SSL config
 read -p $'SSL Listener \e[2m(ON/off)\e[0m: ' SSL_ON
 
-
 if [[ "$SSL_ON" != "on" ]]; then
     SSL_ON=${DEFAULT_SSL_ON}
 fi
@@ -139,7 +141,6 @@ echo "# Local dev apache config file, automagically created by apacheme
 </VirtualHost>
 " >> ${DIR_AVAILABLE}/${DEV_URL}.conf
 
-
 if [[ "$SSL_ON" == "on" ]]; then
     echo "<VirtualHost *:443>
     SSLEngine On
@@ -160,7 +161,6 @@ if [[ "$ENABLE_SITE" == "yes" ]]; then
 fi
 
 
-
 ## Update hosts file
 
 HOSTS_FILE_ENTRY=$(grep "127.0.0.1 ${DEV_URL}" /etc/hosts)
@@ -171,6 +171,7 @@ if [[ -z "$HOSTS_FILE_ENTRY" ]]; then
 else
     printf "\e[2mHosts entry found, file unchanged...\e[0m\n"    
 fi
+
 
 ## All done, let them know what happened
 
