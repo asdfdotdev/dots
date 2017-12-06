@@ -148,6 +148,7 @@ else
     export PATH=~/.dots/bash/scripts:$PATH
 fi
 
+export PATH=~/go/bin:$PATH
 
 #
 export EDITOR=vim
