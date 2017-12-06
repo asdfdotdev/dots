@@ -98,19 +98,19 @@ echo -e "\033[0;32mSSL Listener: $SSL_ON\033[0m"
 printf "\e[2mConfirming provided directory paths exist...\e[0m\n"
 
 if [ ! -d "$DIR_AVAILABLE" ]; then
-    echo -e "\033[0;31mFattal Error: Sites Available directory does not exist.\033[0m"
+    echo -e "\033[0;31mFatal Error: Sites Available directory does not exist.\033[0m"
     exit
 fi
 
 if [[ "$ENABLE_SITE" == "yes" ]]; then
     if [ ! -d "$DIR_ENABLED" ]; then
-        echo -e "\033[0;31mFattal Error: Sites Enabled directory does not exist.\033[0m"
+        echo -e "\033[0;31mFatal Error: Sites Enabled directory does not exist.\033[0m"
         exit
     fi
 fi
 
 if [ ! -d "$SOURCE_PATH" ]; then
-    echo -e "\033[0;31mFattal Error: Source Path directory does not exist.\033[0m"
+    echo -e "\033[0;31mFatal Error: Source Path directory does not exist.\033[0m"
     exit
 fi
 
