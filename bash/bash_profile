@@ -32,7 +32,7 @@ alias gitwork='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_work ~/.gituse
 alias gitcheck='git config -l | grep user'
 alias unixtime='date +%s'
 alias vic="vim -c 'execute \"silent !echo \" . &fileencoding | q'"
-alias notes="subl ~/Dropbox/Notes/"
+alias notes="subl ~/Sync/Notes/"
 
 # Because I'm Dumb (General)
 alias copy=$'printf "\nscp SOURCE TARGET (Remote: USER@HOST:FILEPATH) \n\n"'
@@ -117,12 +117,12 @@ fi
 
 
 #  Super Awesome History
-if [ -d ~/Dropbox/bash/logs/ ]
+if [ -d ~/Sync/Bash/logs/ ]
 then
-    export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Dropbox/bash/logs/$(date "+%Y-%m-%d").log; fi'
+    export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Sync/Bash/logs/$(date "+%Y-%m-%d").log; fi'
 
     super_history_search() {
-      grep -C 0 "$1" ~/Dropbox/bash/logs/*.log
+      grep -C 0 "$1" ~/Sync/Bash/logs/*.log
     }
 
     alias historyall=super_history_search
