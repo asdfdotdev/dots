@@ -117,16 +117,20 @@ fi
 
 
 #  Super Awesome History
-if [ -d ~/Sync/Bash/logs/ ]
+if [[ -d ~/Sync/Bash/logs/ ]]
 then
-    export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> ~/Sync/Bash/logs/$(date "+%Y-%m-%d").log; fi'
-
-    super_history_search() {
-      grep -C 0 "$1" ~/Sync/Bash/logs/*.log
-    }
-
-    alias historyall=super_history_search
+    CLI_LOG=~/Sync/Bash/logs
+else
+    CLI_LOG=~/Sync/Work/Bash/logs
 fi
+
+export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> $CLI_LOG/$(date "+%Y-%m-%d").log; fi'
+
+super_history_search() {
+    grep -C 0 "$1" ~/Sync/Bash/logs/*.log ~/Sync/Work/Bash/logs/*.log
+}
+
+alias historyall=super_history_search
 
 
 # Activate Colors
