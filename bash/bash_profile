@@ -124,14 +124,16 @@ else
     CLI_LOG=~/Sync/Work/Bash/logs
 fi
 
-export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> $CLI_LOG/$(date "+%Y-%m-%d").log; fi'
+if [[ -d CLI_LOG ]]
+then
+    export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> $CLI_LOG/$(date "+%Y-%m-%d").log; fi'
 
-super_history_search() {
-    grep -C 0 "$1" ~/Sync/Bash/logs/*.log ~/Sync/Work/Bash/logs/*.log
-}
+    super_history_search() {
+        grep -C 0 "$1" ~/Sync/Bash/logs/*.log ~/Sync/Work/Bash/logs/*.log
+    }
 
-alias historyall=super_history_search
-
+    alias historyall=super_history_search
+fi
 
 # Activate Colors
 if [ -f ~/.dir_colors ]
