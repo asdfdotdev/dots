@@ -117,14 +117,14 @@ fi
 
 
 #  Super Awesome History
-if [[ -d ~/Sync/Bash/logs/ ]]
+if [[ -d "${HOME}/Sync/Bash/logs" ]]
 then
-    CLI_LOG=~/Sync/Bash/logs
+    CLI_LOG="${HOME}/Sync/Bash/logs"
 else
-    CLI_LOG=~/Sync/Work/Bash/logs
+    CLI_LOG="${HOME}/Sync/Work/Bash/logs"
 fi
 
-if [[ -d CLI_LOG ]]
+if [[ -d $CLI_LOG ]]
 then
     export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> $CLI_LOG/$(date "+%Y-%m-%d").log; fi'
 
