@@ -18,53 +18,27 @@ brew "aspell"
 brew "autoconf"
 brew "automake"
 brew "bash-completion"
-brew "bison@2.7"
-brew "boost"
-brew "brew-php-switcher"
-brew "brotli"
-brew "c-ares"
-brew "cairo"
+brew "bcrypt"
+brew "ccrypt"
 brew "clamav"
-brew "cloog"
 brew "cmake"
 brew "cmatrix"
 brew "composer"
 brew "coreutils"
 brew "cowsay"
 brew "cscope"
-brew "drush"
-brew "flex"
-brew "fontconfig"
 brew "fortune"
-brew "freetds"
-brew "freetype"
 brew "gcc"
 brew "gd"
-brew "gdbm"
-brew "gettext"
-brew "gifsicle"
+brew "gettext", link: true
 brew "git"
 brew "git-extras"
-brew "git-flow"
-brew "glib"
-brew "gmp"
-brew "gmp@4"
 brew "gnu-sed"
-brew "go"
-brew "heroku"
 brew "htop"
 brew "httpd"
 brew "hub"
 brew "hubflow"
-brew "icu4c"
-brew "igbinary"
 brew "imagemagick"
-brew "imap-uw"
-brew "isl"
-brew "isl@0.12"
-brew "jansson"
-brew "jemalloc"
-brew "jhead"
 brew "jpeg"
 brew "jpegoptim"
 brew "libev"
@@ -92,16 +66,17 @@ brew "lorem"
 brew "luajit"
 brew "lynx"
 brew "macvim"
-brew "mariadb"
 brew "mas"
 brew "mcrypt"
 brew "memcached"
 brew "mhash"
 brew "mpfr"
 brew "msgpack"
+brew "mysql", restart_service: true
 brew "neon"
 brew "nghttp2"
-brew "node"
+brew "nmap"
+brew "node", link: false
 brew "openssl"
 brew "openssl@1.1"
 brew "optipng"
@@ -111,42 +86,35 @@ brew "par"
 brew "pcre"
 brew "perl"
 brew "phantomjs"
-brew "php@5.6", args: ['with-http2'], link: false
-brew "php56-apcu", args: ['build-from-source']
-brew "php56-igbinary", args: ['build-from-source']
-brew "php56-opcache", args: ['build-from-source']
-brew "php56-redis", args: ['build-from-source']
-brew "php56-xdebug", args: ['build-from-source']
+brew "php-code-sniffer"
+brew "php-cs-fixer"
 brew "php@7.0", args: ['with-http2'], link: false
-brew "php70-igbinary", args: ['build-from-source']
-brew "php70-opcache", args: ['build-from-source']
-brew "php70-redis", args: ['build-from-source']
-brew "php70-xdebug", args: ['build-from-source']
+#brew "php70-igbinary", args: ['build-from-source']
+#brew "php70-opcache", args: ['build-from-source']
+#brew "php70-redis", args: ['build-from-source']
+#brew "php70-xdebug", args: ['build-from-source']
 brew "php@7.1", args: ['with-http2']
-brew "php71-igbinary", args: ['build-from-source']
-brew "php71-opcache", args: ['build-from-source']
-brew "php71-redis", args: ['build-from-source']
-brew "php71-xdebug", args: ['build-from-source']
+#brew "php71-igbinary", args: ['build-from-source']
+#brew "php71-opcache", args: ['build-from-source']
+#brew "php71-redis", args: ['build-from-source']
+#brew "php71-xdebug", args: ['build-from-source']
 brew "php@7.2", args: ['with-http2'], link: false
-brew "php72-igbinary", args: ['build-from-source']
-brew "php72-opcache", args: ['build-from-source']
-brew "php72-redis", args: ['build-from-source']
-brew "php72-xdebug", args: ['build-from-source']
+#brew "php72-igbinary", args: ['build-from-source']
+#brew "php72-opcache", args: ['build-from-source']
+#brew "php72-redis", args: ['build-from-source']
+#brew "php72-xdebug", args: ['build-from-source']
 brew "phpunit"
-brew "phpunit@5.7"
 brew "pixman"
 brew "pkg-config"
 brew "pngcrush"
 brew "pngquant"
 brew "postgresql"
 brew "python"
-brew "python3"
-brew "r"
-brew "r-gui"
+brew "python@2", link: false
 brew "rbenv"
 brew "re2c"
 brew "readline"
-brew "redis"
+brew "redis", restart_service: true
 brew "ruby"
 brew "ruby-build"
 brew "s3cmd"
