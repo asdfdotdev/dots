@@ -1,0 +1,136 @@
+#!/usr/bin/php
+
+<?php
+$plugin_to_check = $argv[1];
+
+/**
+ * Confirm we have a plugin name
+ */
+if (empty($plugin_to_check)) {
+    echo "Sorry, we need the directory name of a plugin to check." . PHP_EOL;
+    exit;
+}
+
+/**
+ * These are the sites we will check
+ */
+$sites_to_check = [
+    // Add your sites here
+    'https://www.whatever.tld',
+];
+
+/**
+ * Variations in readme file name, varies plugin to plugin - update as needed
+ */
+$readme_filenames = [
+    'readme.txt',
+    'README.txt',
+    'ReadMe.txt',
+];
+
+$analysis = '';
+sort($sites_to_check);
+$site_count = count($sites_to_check);
+$readmes = implode("\n -", $readme_filenames);
+
+
+/**
+ * Let them know something is happening
+ */
+echo <<<TEXT
+Checking {$site_count} sites for the following read me variations:
+ -{$readmes}
+
+TEXT;
+
+
+/**
+ * Perform the checks
+ */
+foreach ($sites_to_check as $site) {
+    foreach($readme_filenames as $readme) {
+        /**
+         * Check for mu version
+         */
+        $url = $site . '/wp-content/mu-plugins/' . $plugin_to_check . '/' . $readme;
+        $result = fetch_output($url);
+
+        if ($result['http_code'] == 200) {
+            $version = get_version_from_readme($result['output']);
+            $analysis .= "v$version\tmu\t\t$site" . PHP_EOL;
+            break;
+        }
+
+        /**
+         * Check for regular version
+         */
+        $url = $site . '/wp-content/plugins/' . $plugin_to_check . '/' . $readme;
+        $result = fetch_output($url);
+
+        if ($result['http_code'] == 200) {
+            $version = get_version_from_readme($result['output']);
+            $analysis .= "v$version\tregular\t\t$site" . PHP_EOL;
+            break;
+        }
+    }
+}
+
+/**
+ * Output the results
+ */
+if (empty($analysis)) {
+    $analysis = "No sites currently using that plugin." . PHP_EOL;
+}
+else {
+    $analysis = "Found the following in use:" . PHP_EOL . $analysis;
+}
+
+echo PHP_EOL . $analysis;
+
+
+/**
+ * Check retrieved readme contents for the Stable tag: label to find out what version is in use
+ *
+ * @param $readme       string readme contents
+ *
+ * @return string       version number, ?? if no version number found
+ */
+function get_version_from_readme($readme) {
+    preg_match('/^Stable tag:(.*$)/mi', $readme, $version);
+
+    // version number found, check it
+    if (isset($version[1])) {
+        $version = strip_tags(trim($version[1]));
+    }
+    else {
+        $version = '??';
+    }
+
+    return $version;
+}
+
+
+/**
+ * curl wrapper, fetches output and http code of the passed url
+ *
+ * @param $url          string url to retrieve
+ *
+ * @return array        [http_code, page output]
+ */
+function fetch_output($url) {
+    $response = [ 'http_code' => '', 'output' => '' ];
+
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+        $http = curl_init();
+        curl_setopt($http, CURLOPT_HEADER, true);
+        curl_setopt($http, CURLOPT_URL, $url);
+        curl_setopt($http, CURLOPT_RETURNTRANSFER, 1);
+        $response = [
+            'output' => curl_exec($http),
+            'http_code' => curl_getinfo($http, CURLINFO_HTTP_CODE),
+        ];
+        curl_close($http);
+    }
+
+    return $response;
+}
