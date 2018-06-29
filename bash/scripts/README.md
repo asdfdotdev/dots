@@ -9,6 +9,7 @@ A few cli toys to enjoy.
 ## PHP Scripts
 
 * **wp_version** - Check a WordPress site's meta to see if it needs an update.
+* **wp-plugin-check** - Check a list of WordPress sites for a provided plugin and return the version number from it's read me
 
 ## Pointless Scripts
 
