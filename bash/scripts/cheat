@@ -1,0 +1,9 @@
+#!/bin/bash
+
+LANGUAGE=$1
+SEARCH="${@:2}"
+SEARCH_CURL=${SEARCH// /+}
+URL="cht.sh/$LANGUAGE/$SEARCH_CURL"
+
+echo $URL
+curl $URL
