@@ -1,107 +1,176 @@
-# Variables
+#################################################################
+# _______________________________________________________
+#/                                                       \
+#| Sections                                              |
+#|   1. Per environment config and setup (macOS/Linux)   |
+#|   2. Universal alias                                  |
+#|   3. Functions                                        |
+#|   4. Super history (Sync version)                     |
+#|   5. Autocomplete and Exports (Path, Editor, etc.)    |
+#|   6. Local Config                                     |
+#|   7. All done                                         |
+#|                                                       |
+#\ -- Bash Profile                                       /
+# -------------------------------------------------------
+#        \   ^__^
+#         \  (oo)\_______
+#            (__)\       )\/\
+#                ||----w |
+#                ||     ||
+#################################################################
+
 
 PLATFORM=$(uname -a)
 ERROR_LOG_FILE="${HOME}/logs/php_error.log"
 
+
+####################################################
+#
+#   1. Per environment config and setup
+#
+####################################################
+
 if [[ $PLATFORM == *"Darwin"* ]]
 then
-    AUTOCOMPLETE=$(brew --prefix)/etc/bash_completion
-    TRASH='~/.Trash'
+  AUTOCOMPLETE=$(brew --prefix)/etc/bash_completion
+  PROFILE_SOURCE='.bash_profile'
+  eval `gdircolors ~/.dir_colors`
+
+  # Ruby Shim
+  eval "$(rbenv init -)"
+
+  alias ll='gls --color=auto -FGlAhp'
+  alias shred='gshred -zvu --iterations=5 --random-source=/dev/urandom'
+  alias f='open -a Finder ./'
+  alias cleanupds="find . -type f -name '*.DS_Store' -ls -delete"
+
+  alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+  alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+  alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
+
+  if [ -f ~/.dir_colors ]
+  then
+    eval `gdircolors ~/.dir_colors`
+  fi
 else
-    AUTOCOMPLETE='/etc/bash_completion'
-    TRASH='~/.local/share/Trash'
+  AUTOCOMPLETE='/etc/bash_completion'
+  PROFILE_SOURCE='.profile'
+
+  alias ll='ls --color=auto -FGlAhp'
+  alias shred='shred -zvu --iterations=5 --random-source=/dev/urandom'
+  alias f='gnome-open .'
+
+  if [ -f ~/.dir_colors ]
+  then
+    eval `dircolors ~/.dir_colors`
+  fi
 fi
 
 
-# Because I'm Lazy
+####################################################
+#
+#   2. Universal alias
+#
+####################################################
+
+alias rebash="source ~/$PROFILE_SOURCE"
+alias seebash="look ~/$PROFILE_SOURCE"
+alias newbash="vim ~/$PROFILE_SOURCE"
 alias .1='cd ../'
 alias .2='cd ../../'
 alias .3='cd ../../../'
 alias .4='cd ../../../../'
-alias look='less -FX'
 alias v='vim'
 alias vi='vim'
 alias nano='vim'
-alias math='expr'
 alias cc='clear'
 alias locip='ifconfig | grep inet'
 alias extip='curl ipecho.net/plain ; echo'
-alias emptytrash='shred $TRASH/* || true  && shred $TRASH/*/* || true && rm -rf $TRASH/* || true && ll $TRASH'
 alias githome='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_home ~/.gituser'
 alias gitwork='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_work ~/.gituser'
 alias gitcheck='git config -l | grep user'
 alias unixtime='date +%s'
-alias vic="vim -c 'execute \"silent !echo \" . &fileencoding | q'"
 alias notes="subl ~/Sync/Notes/"
-
-# Because I'm Dumb (General)
-alias copy=$'printf "\nscp SOURCE TARGET (Remote: USER@HOST:FILEPATH) \n\n"'
-alias patch=$'printf "\nTEST: svn patch ~/upload/[PATCH].patch ./ --dry-run\nRUN:  svn patch ~/upload/[PATCH].patch ./\n\nDO A DRY RUN FIRST\n\n"'
-alias zip=$'printf "\nCOMPRESS: tar -zcvf ARCHIVE.tar.gz SOURCE\nEXTRACT: tar -zxvf ARCHIVE.tar.gz\n\n"'
-alias dump=$'printf "\nOUT: mysqldump -u USERNAME -p\'PASSWORD\' DB_NAME > FILE.sql\nIN:  mysql -u USERNAME -p\'PASSWORD\' DB_NAME < FILE.sql \n\n"'
-alias cmds=$'printf "\n// Slow Move\nh   move one character left\nj   move one row down\nk   move one row up\nl   move one character right\n\n// Fast Move\nH   move to top of screen\nM   move to middle of screen\nL   move to bottom of screen\n\n// Jumping\nw   move to beginning of next word\nW   move to beginning of next word after a whitespace\n\nb   move to previous beginning of word\nB   move to beginning of previous word before a whitespace\n\ne   move to end of word\nE   move to end of word before a whitespace\n\n"'
-alias search=$'printf "\nfind /PATH -name \"NAME\"\n\n"'
+alias apacheconfig="httpd -V | grep httpd.conf"
+alias phpconfig="php -i | grep php.ini"
+alias mysqlconfig="mysql --help | grep my.cnf"
 
 
-# Because I'm Dumb (VCS)
-alias githelp=$'printf "\nCreate Patch\ngit format-patch BRANCH_NAME --stdout > FILE_NAME.patch\n\nUse It\ngit apply --stat PATCH_FILE.patch\t-- See Changes\ngit apply --check PATCH_FILE.patch\t-- Check for Error\ngit apply PATCH_FILE.patch\t\t-- Make it Real\n\n"'
+####################################################
+#
+#   3. Functions
+#
+####################################################
 
-
-# Pretty Colors & Management
-if [[ $PLATFORM == *"Linux"* ]]
-then
-    alias ll='ls --color=auto -la'
-    alias ls='ls --color=auto'
-    alias la='ls --color=auto -a'
-    alias lsl='ls --color=auto -lht'
-    alias lsd='ls --color=auto -d */'
-    alias lsla='ls --color=auto -la'
-    alias rebash='source ~/.profile'
-    alias seebash='look ~/.profile'
-    alias newbash='vim ~/.profile'
-    alias shred='shred -zvu --iterations=5 --random-source=/dev/urandom'
-else
-    alias ll='gls --color=auto -la'
-    alias ls='gls --color=auto'
-    alias la='gls --color=auto -a'
-    alias lsl='gls --color=auto -lht'
-    alias lsd='gls --color=auto -d */'
-    alias lsla='gls --color=auto -la' 
-    alias rebash='source ~/.bash_profile'
-    alias seebash='look ~/.bash_profile'
-    alias newbash='vim ~/.bash_profile'
-    alias shred='gshred -zvu --iterations=5 --random-source=/dev/urandom'
-    alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
-    alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
-    alias sed='gsed'
-    alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
-fi
-
+#
 # Debugging
-function newlog { rm $ERROR_LOG_FILE; touch $ERROR_LOG_FILE; printf "Log Cleared\n"; }
-export -f newlog
+#
 
-function watchlog { tail -f $ERROR_LOG_FILE; }
-export -f watchlog
-
-# Tools
-alias cachelife='countdown.sh'
-
-# Misc
-
-function bak { cp $1{,.bak};  }
-export -f bak
-
-# Git & SVN Branch Prompt
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+newlog() {
+  rm $ERROR_LOG_FILE;
+  touch $ERROR_LOG_FILE;
+  printf "Log Cleared\n";
 }
+
+watchlog() {
+  tail -f $ERROR_LOG_FILE;
+}
+
+#
+# Shortcuts
+#
+
+bak() {
+  cp $1{,.bak};
+}
+
+mcd() {
+  mkdir -p "$1" && cd "$1";
+}
+
+zipf() {
+  zip -r "$1".zip "$1" ;
+}
+
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)  tar xzf $1   ;;
+      *.bz2)     bunzip2 $1   ;;
+      *.rar)     unrar e $1   ;;
+      *.gz)    gunzip $1    ;;
+      *.tar)     tar xf $1    ;;
+      *.tbz2)    tar xjf $1   ;;
+      *.tgz)     tar xzf $1   ;;
+      *.zip)     unzip $1     ;;
+      *.Z)     uncompress $1  ;;
+      *.7z)    7z x $1    ;;
+      *)   echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+export -f newlog watchlog bak mcd zipf extract
+
+#
+# Git & SVN Branch Prompt
+#
+
+parse_git_branch() {
+   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
 parse_svn_branch() {
   parse_svn_url | sed -e 's#^'"$(parse_svn_repository_root)"'##g' | awk '{print " (svn::"$1")" }'
 }
+
 parse_svn_url() {
   svn info 2>/dev/null | sed -ne 's#^URL: ##p'
 }
+
 parse_svn_repository_root() {
   svn info 2>/dev/null | sed -ne 's#^Repository Root: ##p'
 }
@@ -109,73 +178,73 @@ parse_svn_repository_root() {
 export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\$(parse_svn_branch)\[\033[00m\] $ "
 
 
-# Add brew autocomplete for git
-if [ -f $AUTOCOMPLETE ]
-then
-    . $AUTOCOMPLETE
-fi
+####################################################
+#
+#   4. Super history
+#
+####################################################
 
 
-#  Super Awesome History
 if [[ -d "${HOME}/Sync/Bash/logs" ]]
 then
-    CLI_LOG="${HOME}/Sync/Bash/logs"
+  CLI_LOG="${HOME}/Sync/Bash/logs"
 else
-    CLI_LOG="${HOME}/Sync/Work/Bash/logs"
+  CLI_LOG="${HOME}/Sync/Work/Bash/logs"
 fi
 
 if [[ -d $CLI_LOG ]]
 then
-    export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> $CLI_LOG/$(date "+%Y-%m-%d").log; fi'
+  export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(history 1)		$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) " >> $CLI_LOG/$(date "+%Y-%m-%d").log; fi'
 
-    super_history_search() {
-        grep -C 0 "$1" ~/Sync/Bash/logs/*.log ~/Sync/Work/Bash/logs/*.log
-    }
+  historyall() {
+    grep -C 0 "$1" ~/Sync/Bash/logs/*.log ~/Sync/Work/Bash/logs/*.log
+  }
 
-    alias historyall=super_history_search
+  export historyall
 fi
 
-# Activate Colors
-if [ -f ~/.dir_colors ]
+
+####################################################
+#
+#   5. Autocomplete and Exports
+#
+####################################################
+
+if [ -f $AUTOCOMPLETE ]
 then
-    if [[ $PLATFORM == *"Linux"* ]]
-    then
-        eval `dircolors ~/.dir_colors`
-    else
-        eval `gdircolors ~/.dir_colors`
-    fi
+  . $AUTOCOMPLETE
 fi
 
-
-#1, Make it So
 if [[ $PLATFORM == *"Darwin"* ]]
 then
-    export PATH=/usr/local/bin:/usr/local/Cellar:/usr/local/bin/mysql:~/.dots/bash/scripts:/usr/local/sbin:$PATH
+  export PATH=/usr/local/bin:/usr/local/Cellar:/usr/local/bin/mysql:~/.dots/bash/scripts:/usr/local/sbin:$PATH
 else
-    export PATH=~/.dots/bash/scripts:$PATH
+  export PATH=~/.dots/bash/scripts:$PATH
 fi
 
 export PATH=~/go/bin:$PATH
-
-#
 export EDITOR=vim
 
 
-# Confirm This Script Loaded
-alias spoon="echo 'Do not try and bend the spoon.'"
-alias nospoon="echo 'It is not the spoon that bends, it is only yourself.'"
+####################################################
+#
+#   6. Local Config
+#
+####################################################
 
-# Ruby Shim
-if [[ $PLATFORM == *"Darwin"* ]]
-then
-    eval "$(rbenv init -)"
-fi
-
-# Allow for local shenanigans
 if [[ -e .bash_profile_local ]]
 then
-    . .bash_profile_local
+  . .bash_profile_local
 fi
 
-# A Fun Greeting
+
+####################################################
+#
+#   7. All done
+#
+####################################################
+
 echo;fortune | cowsay;echo;
+
+alias spoon="echo 'Do not try and bend the spoon.'"
+alias nospoon="echo 'It is not the spoon that bends, it is only yourself.'"
