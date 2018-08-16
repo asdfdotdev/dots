@@ -23,8 +23,8 @@ PLATFORM=$(uname -a)
 RUNNING_USER=$(logname)
 if [[ $PLATFORM == *"Darwin"* ]]
 then
-    DEFAULT_DIR_AVAILABLE="/usr/local/etc/apache2/2.4/sites-available"
-    DEFAULT_DIR_ENABLED="/usr/local/etc/apache2/2.4/sites-enabled"
+    DEFAULT_DIR_AVAILABLE="/usr/local/etc/httpd/sites-available"
+    DEFAULT_DIR_ENABLED="/usr/local/etc/httpd/sites-enabled"
     DEFAULT_SOURCE_PATH="/Users/${RUNNING_USER}/Sites/com.site"
 else
     DEFAULT_DIR_AVAILABLE="/etc/apache2/sites-available"
