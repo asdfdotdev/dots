@@ -153,7 +153,12 @@ extract () {
   fi
 }
 
-export -f newlog watchlog bak mcd zipf extract
+hashit(){
+  echo -n "$2" | openssl $1
+}
+
+export -f newlog watchlog bak mcd zipf extract hashit
+
 
 #
 # Git & SVN Branch Prompt
@@ -232,9 +237,9 @@ export EDITOR=vim
 #
 ####################################################
 
-if [[ -e .bash_profile_local ]]
+if [[ -e ~/.bash_profile_local ]]
 then
-  . .bash_profile_local
+  . ~/.bash_profile_local
 fi
 
 
