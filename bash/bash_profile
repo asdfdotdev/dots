@@ -36,9 +36,6 @@ then
   PROFILE_SOURCE='.bash_profile'
   eval `gdircolors ~/.dir_colors`
 
-  # Ruby Shim
-  eval "$(rbenv init -)"
-
   alias ll='gls --color=auto -FGlAhp'
   alias shred='gshred -zvu --iterations=5 --random-source=/dev/urandom'
   alias f='open -a Finder ./'
