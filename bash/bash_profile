@@ -36,6 +36,11 @@ then
   PROFILE_SOURCE='.bash_profile'
   eval `gdircolors ~/.dir_colors`
 
+  ##
+  # Well, this is annoying
+  ##
+  export BASH_SILENCE_DEPRECATION_WARNING=1
+
   alias ll='gls --color=auto -FGlAhp'
   alias shred='gshred -zvu --iterations=5 --random-source=/dev/urandom'
   alias f='open -a Finder ./'
