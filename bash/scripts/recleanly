@@ -1,0 +1,210 @@
+#!/usr/bin/php
+
+<?php
+/**
+ * Recleanly
+ *
+ * This script provides an easy way to batch delete Rebrandly links from your free account so
+ * that you can avoid the 500 link limit when using their API for development/testing.
+ *
+ * @package Recleanly
+ * @copyright 2019- Chris Carlevato (https://asdf.dev)
+ * @license http://www.gnu.org/licenses/gpl-2.0.html
+ * @link https://asdf.dev
+ *
+ * @usage
+ * $ recleanly YOUR_API_KEY
+ * Deleting links with the following N ids:
+ *     LINK_ID_1
+ *     LINK_ID_2
+ *     ...
+ *     LINK_ID_N
+ *
+ * 100%[XXXXXXXXXXXXXXXXXXXXXXXXX] :: Complete!
+ */
+
+if('cli' == php_sapi_name()) {
+  $recleanly__apiKey = $argv[1];
+  $recleanly__apiUrl = "https://api.rebrandly.com/v1/";
+
+  recleanly__processDeletion();
+}
+
+/**
+ * Process link deletion.
+ */
+function recleanly__processDeletion()
+{
+  /**
+   * Retrieve links
+   */
+  $linksToDelete = recleanly__getLinkIds();
+  $linkCount = count($linksToDelete);
+
+  /**
+   * Notify user of what is going to happen
+   */
+  printf(
+    'Deleting links with the following %3$s ids:%1$s    %2$s%1$s%1$s',
+    PHP_EOL,
+    implode("\n    ", $linksToDelete),
+    $linkCount
+  );
+
+  /**
+   * Delete links and update progress
+   */
+  foreach ($linksToDelete as $index => $linkId)
+  {
+    print recleanly__displayProgress(
+      $index,
+      $linkCount,
+      $linkCount,
+      sprintf(" :: Deleting id %s", $linkId)
+    );
+    $result = json_decode(recleanly__deleteLinkById($linkId));
+
+    if ('deleted' !== $result->status)
+    {
+      print PHP_EOL;
+      print PHP_EOL;
+      recleanly__abortWithNotice(
+        sprintf(
+          'Status of deletion request was (%s) not deleted. Stopping.',
+          $result->status
+        )
+      );
+    }
+  }
+
+  /**
+   * Finished, provide final update and overwrite last id
+   */
+  print recleanly__displayProgress(
+    $linkCount,
+    $linkCount,
+    $linkCount,
+    sprintf(" :: Complete!                                   %s", PHP_EOL)
+  );
+}
+
+
+/**
+ * Get list of oldest links in the account (orderDir=asc). These are the links that will be deleted.
+ *
+ * @return array Link ids to be deleted.
+ */
+function recleanly__getLinkIds()
+{
+  $retrievedLinks = recleanly__fetchResponse('GET', 'links?orderBy=createdAt&orderDir=asc');
+
+  $linkIds = array_column(
+    json_decode($retrievedLinks),
+    'id'
+  );
+
+  if (0 >= count($linkIds))
+  {
+    recleanly__abortWithNotice('No links found.');
+  }
+
+  return $linkIds;
+}
+
+
+/**
+ * Delete link by id.
+ *
+ * @param $id String id of the link being deleted.
+ * @return bool|string API response.
+ */
+function recleanly__deleteLinkById($id)
+{
+  return recleanly__fetchResponse('DELETE', 'links/' . $id);
+}
+
+
+/**
+ * Fetch response from the API. (curl wrapper)
+ *
+ * @param $requestType String custom request type (GET/DELETE/etc.)
+ * @param $requestPath String API endpoint path, including ID when deleting.
+ * @return bool|string Response.
+ */
+function recleanly__fetchResponse($requestType, $requestPath)
+{
+  global $recleanly__apiUrl, $recleanly__apiKey;
+
+  $curl = curl_init();
+
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => $recleanly__apiUrl . $requestPath,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => $requestType,
+    CURLOPT_HTTPHEADER => array(
+      "Accept: */*",
+      "Accept-Encoding: gzip, deflate",
+      "Cache-Control: no-cache",
+      "Connection: keep-alive",
+      "Host: api.rebrandly.com",
+      "User-Agent: recleanly",
+      "apikey: " . $recleanly__apiKey,
+      "cache-control: no-cache"
+    ),
+  ));
+
+  $response = curl_exec($curl);
+  $errorMessage = curl_error($curl);
+  $errorNumber = curl_errno($curl);
+  curl_close($curl);
+
+  if ('Unauthorized' == $response)
+  {
+    recleanly__abortWithNotice('API access unauthorized. Please verify API Key and try again.');
+  }
+  elseif (0 < $errorNumber)
+  {
+    recleanly__abortWithNotice($errorMessage  . '(' . $errorNumber . ')');
+  }
+
+  return $response;
+}
+
+
+/**
+ * Display visual showing progress of batch deletion.
+ *
+ * @param $step Int of index being processed.
+ * @param $total Int of total number to process.
+ * @param int $size Progress bar display width.
+ * @param string $message Update message to display on this iteration.
+ * @return string Formatted progress bar text for output.
+ */
+function recleanly__displayProgress($step, $total, $size=50, $message="")
+{
+  $percentComplete = round(($step * 100) / $total);
+  $displayProgress = round(($size * $percentComplete) / 100);
+
+  return sprintf(
+    " %s%%[%s%s]%s\r",
+    $percentComplete,
+    str_repeat("X", $displayProgress),
+    str_repeat(".", $size-$displayProgress),
+    $message
+  );
+}
+
+
+/**
+ * @param $message
+ */
+function recleanly__abortWithNotice($message)
+{
+  print $message;
+  print PHP_EOL;
+  exit();
+}
