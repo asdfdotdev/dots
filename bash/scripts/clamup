@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Viruses will be moved here when found
-DUMP_DIR="${HOME}/VIRUS"
+DUMP_DIR="${HOME}/clamav_moved"
 LOG_DIR="${HOME}/logs"
 LOG_FILE="clamav_scan.log"
 CURRENT_LOCATION=$(pwd)
@@ -18,9 +18,6 @@ fi
 
 # Check for dump directory, create if missing
 [ -d $DUMP_DIR ] || mkdir $DUMP_DIR
-
-# Update definitions
-freshclam
 
 # Run Scan on selected path
 clamscan -r --move=${DUMP_DIR} -l ${LOG_DIR}/${LOG_FILE} $1
