@@ -79,6 +79,7 @@ fi
 alias rebash="source ~/$PROFILE_SOURCE"
 alias seebash="look ~/$PROFILE_SOURCE"
 alias newbash="vim ~/$PROFILE_SOURCE"
+alias localbash="vim ~/.bash_profile_local"
 alias .1='cd ../'
 alias .2='cd ../../'
 alias .3='cd ../../../'
