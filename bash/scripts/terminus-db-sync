@@ -1,0 +1,86 @@
+#!/bin/bash
+#
+# Terminus Database Sync
+#
+# Requirements: Terminus, WP-CLI, Drush
+# - https://pantheon.io/docs/terminus
+# - https://wp-cli.org/
+# - https://www.drush.org/
+#
+# This shell script will make a database backup for the specified Pantheon
+# hosted site, download the gzip file, extract it and then import it using
+# either WP-CLI or Drush
+#
+# WordPress:
+# - Drops existing database
+# - Creates new database
+# - Imports SQL file
+# - Deletes transients
+#
+# Drupal:
+# - Drop tables in existing database
+# - Import SQL file
+# - Rebuild Cache
+#
+
+if [ "$1" == "-h" ]; then
+  echo "Download and import a fresh database for any Pantheon hosted site."
+  echo "If you have terminus, wp-cli, and/or drush installed."
+  echo ""
+  echo "Usage: `basename $0` [wp|drupal] [SITENAME.ENV]"
+  exit 0
+fi
+
+# Confirm we know drupal/wp
+if [[ -z "$1" ]]; then
+  printf "Please confirm which type of db we're updating: drupal/wp\n"
+  exit 0
+fi
+
+# Confirm we have a site
+if [[ -z "$2" ]]; then
+  printf "Please provide site to retrieve db from: SITENAME.ENV\n"
+  exit 0
+fi
+
+APP=$1
+SITE=$2
+
+#
+# Validate App
+#
+if [[ "$APP" != "drupal" && "$APP" != "wp" ]]; then
+    printf "App must be drupal or wp\n"
+    exit 1
+fi
+
+#
+# Create
+#
+printf "Terminus will say 'Export code, files and database...' but it is just a database\n"
+terminus backup:create $SITE --element=db
+
+#
+# Download
+#
+terminus backup:get $SITE --element=db --to=/tmp/$SITE-backup.sql.gz
+
+#
+# Extract
+#
+gzip -d /tmp/$SITE-backup.sql.gz
+
+#
+# Import
+#
+if [[ "$APP" == "drupal" ]]; then
+  drush sql-drop -y && drush sql:cli < /tmp/$SITE-backup.sql
+  drush cache:rebuild
+elif [[ "$APP" == "wp" ]]; then
+  wp db drop --yes
+  wp db create
+  wp db import /tmp/$SITE-backup.sql
+  wp transient delete --all
+fi
+
+printf ""
