@@ -15,7 +15,7 @@
 # - Drops existing database
 # - Creates new database
 # - Imports SQL file
-# - Deletes transients
+# - Delete transients
 #
 # Drupal:
 # - Drop tables in existing database
@@ -71,16 +71,23 @@ terminus backup:get $SITE --element=db --to=/tmp/$SITE-backup.sql.gz
 gzip -d /tmp/$SITE-backup.sql.gz
 
 #
-# Import
+# Maybe Import
 #
-if [[ "$APP" == "drupal" ]]; then
-  drush sql-drop -y && drush sql:cli < /tmp/$SITE-backup.sql
-  drush cache:rebuild
-elif [[ "$APP" == "wp" ]]; then
-  wp db drop --yes
-  wp db create
-  wp db import /tmp/$SITE-backup.sql
-  wp transient delete --all
+FILE="/tmp/$SITE-backup.sql"
+
+if [[ -f "$FILE" ]]; then
+  if [[ "$APP" == "drupal" ]]; then
+    drush sql-drop -y && drush sql:cli < /tmp/$SITE-backup.sql
+    drush cache:rebuild
+  elif [[ "$APP" == "wp" ]]; then
+    wp db drop --yes
+    wp db create
+    wp db import /tmp/$SITE-backup.sql
+    wp transient delete --all
+  fi
+else
+  echo ""
+  echo "Import file missing, there is probably helpful feedback above."
 fi
 
-printf ""
+echo ""
