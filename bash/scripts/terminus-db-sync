@@ -24,10 +24,20 @@
 #
 
 if [ "$1" == "-h" ]; then
-  echo "Download and import a fresh database for any Pantheon hosted site."
-  echo "If you have terminus, wp-cli, and/or drush installed."
+  echo "Sync a local database with the Pantheon environment of your choosing."
+  echo "Run this command from within your project path as you would WP-CLI or Drush."
   echo ""
-  echo "Usage: `basename $0` [wp|drupal] [SITENAME.ENV]"
+  echo "The following additional resources are required:"
+  echo ""
+  echo "- Terminus: https://pantheon.io/docs/terminus/"
+  echo "- Drush: https://www.drush.org/latest/"
+  echo "- WP-CLI: https://wp-cli.org/"
+  echo ""
+  echo "Usage:"
+  echo "    $ `basename $0` [wp|drupal] [SITENAME.ENV]"
+  echo ""
+  echo "To review Pantheon sites you have access to:"
+  echo "    $ terminus site:list"
   exit 0
 fi
 
