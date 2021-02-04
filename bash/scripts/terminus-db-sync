@@ -87,12 +87,12 @@ FILE="/tmp/$SITE-backup.sql"
 
 if [[ -f "$FILE" ]]; then
   if [[ "$APP" == "drupal" ]]; then
-    drush sql-drop -y && drush sql:cli < /tmp/$SITE-backup.sql
+    drush sql-drop -y && drush sql:cli < $FILE
     drush cache:rebuild
   elif [[ "$APP" == "wp" ]]; then
     wp db drop --yes
     wp db create
-    wp db import /tmp/$SITE-backup.sql
+    wp db import $FILE
     wp transient delete --all
   fi
 else
