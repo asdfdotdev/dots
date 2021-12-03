@@ -1,0 +1,116 @@
+#!/bin/bash
+#
+# Terminus Files Sync
+#
+# Requirements: Terminus, WP-CLI, Drush, rsync
+# - https://pantheon.io/docs/terminus
+# - https://wp-cli.org/
+# - https://www.drush.org/
+# - https://rsync.samba.org/
+#
+# This shell script will make a files backup for the specified Pantheon
+# hosted site, download the backup file, extract it and then rsync the contents
+#
+# WordPress: Identifies uploads directory from WP-CLI (wp_get_upload_dir())
+#
+# Drupal: Identifies files directory from Drush (drush drupal-directory files)
+#
+
+if [ "$1" == "-h" ]; then
+  echo "Sync a local site files with the Pantheon environment of your choosing."
+  echo "Run this command from within your project path as you would WP-CLI or Drush."
+  echo "To create a new backup (which takes considerably longer) pass 'backup' as a third param"
+  echo ""
+  echo "Yes there is a terminus plugin to do this but this one is only one way and failsafe."
+  echo ""
+  echo "The following additional resources are required:"
+  echo ""
+  echo "- Terminus: https://pantheon.io/docs/terminus/"
+  echo "- Drush: https://www.drush.org/latest/"
+  echo "- WP-CLI: https://wp-cli.org/"
+  echo "- rsync: https://rsync.samba.org/"
+  echo ""
+  echo "Usage:"
+  echo "    $ `basename $0` [wp|drupal] [SITENAME.ENV] [new]"
+  echo ""
+  echo "To review Pantheon sites you have access to:"
+  echo "    $ terminus site:list"
+  exit 0
+fi
+
+# Confirm we know drupal/wp
+if [[ -z "$1" ]]; then
+  printf "Please confirm which type of site we're updating: drupal/wp\n"
+  exit 0
+fi
+
+# Confirm we have a site
+if [[ -z "$2" ]]; then
+  printf "Please provide site to retrieve files from: SITENAME.ENV\n"
+  exit 0
+fi
+
+APP=$1
+SITE=$2
+NEW=$3
+ENVIRONMENT=${SITE##*.}
+DOWNLOAD_FILE=/tmp/$SITE-files.tar.gz
+DOWNLOAD_PATH=/tmp/$SITE-files
+
+#
+# Validate App
+#
+if [[ "$APP" != "drupal" && "$APP" != "wp" ]]; then
+    printf "App must be drupal or wp\n"
+    exit 1
+fi
+
+# Get files path
+if [[ "$APP" == "drupal" ]]; then
+  FILES_DIR=$(drush dd files)
+elif [[ "$APP" == "wp" ]]; then
+  FILES_DIR=$(wp eval 'error_reporting(0);echo wp_get_upload_dir()['basedir'];echo PHP_EOL;')
+fi
+
+#
+# Create
+#
+if [[ "$3" == "backup" ]]; then
+  printf "Terminus will say 'Export code, files and database...' but it is just files\n"
+  terminus backup:create $SITE --element=files
+else
+  printf "Downloading files from the most recent backup.\n"
+fi
+
+#
+# Download (Remove previous if exists)
+#
+if [[ -f $DOWNLOAD_FILE ]]; then
+  rm $DOWNLOAD_FILE
+fi
+
+terminus backup:get $SITE --element=files --to=$DOWNLOAD_FILE
+
+#
+# Prepare Paths
+#
+if [[ -d $DOWNLOAD_PATH ]]; then
+  rm -rf $DOWNLOAD_PATH
+fi
+mkdir $DOWNLOAD_PATH
+
+#
+# Extract
+#
+tar -xzf $DOWNLOAD_FILE -C $DOWNLOAD_PATH
+
+#
+# Copy Files
+#
+SOURCE="/tmp/$SITE-files/files_$ENVIRONMENT/"
+DESTINATION="$FILES_DIR/"
+
+printf "Syncing Files:\n    Source: $SOURCE\n    Destination: $DESTINATION"
+rsync -a $SOURCE $DESTINATION
+
+printf "\n...complete\n"
