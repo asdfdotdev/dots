@@ -90,11 +90,7 @@ alias nano='vim'
 alias cc='clear'
 alias locip='ifconfig | grep inet'
 alias extip='curl ipecho.net/plain ; echo'
-alias githome='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_home ~/.gituser'
-alias gitwork='rm ~/.gituser || true && ln -s ~/.dots/git/gituser_work ~/.gituser'
-alias gitcheck='git config -l | grep user'
 alias unixtime='date +%s'
-alias notes="subl ~/Sync/Notes/"
 alias apacheconfig="httpd -V | grep httpd.conf"
 alias phpconfig="php -i | grep php.ini"
 alias mysqlconfig="mysql --help | grep my.cnf"
@@ -198,7 +194,7 @@ if [[ -d "${HOME}/Sync/Bash/logs" ]]
 then
   CLI_LOG="${HOME}/Sync/Bash/logs"
 else
-  CLI_LOG="${HOME}/Sync/Work/Bash/logs"
+  CLI_LOG="${HOME}/logs/bash"
 fi
 
 if [[ -d $CLI_LOG ]]
@@ -226,7 +222,7 @@ fi
 
 if [[ $PLATFORM == *"Darwin"* ]]
 then
-  export PATH=/usr/local/bin:/usr/local/Cellar:/usr/local/bin/mysql:~/.dots/bash/scripts:/usr/local/sbin:$PATH
+  export PATH=~/.dots/bash/scripts:$PATH
 else
   export PATH=~/.dots/bash/scripts:$PATH
 fi
