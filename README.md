@@ -39,13 +39,11 @@ $ ln -s ~/.dots/git/commit_template ~/.git_commit_template
 > Note: If git autocomplete isn't working check for `/usr/local/etc/bash_completion`, if it's missing: run ```$ ln -s /usr/local/etc/bash_completion.d/git-completion.bash /usr/local/etc/bash_completion```
 
 #### Setup Git User
-Use githome/gitwork alias, or:
+Copy the gituser template file and update as needed.
 
 ```
-$ ln -s ~/.dots/git/gituser_WHICH ~/.gituser
+$ cp ~/.dots/git/gituser_template ~/.gituser
 ```
-
-> Note: WHICH = work|home. This allows distinct identities when needed (update these profiles as needed or I'll get credit for your commits :)).
 
 ### Setup Homebrew (macOS)
 ```
